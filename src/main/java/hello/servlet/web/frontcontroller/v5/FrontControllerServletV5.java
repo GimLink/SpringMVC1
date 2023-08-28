@@ -47,7 +47,7 @@ public class FrontControllerServletV5 extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Object handler = getHandler(request);
+        Object handler = getHandler(request); //handler == controller
         if (handler == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
@@ -55,12 +55,12 @@ public class FrontControllerServletV5 extends HttpServlet {
 
         MyHandlerAdapter adapter = getHandlerAdapter(handler);
 
-        ModelView mv = adapter.handle(request, response, handler);
+        ModelView mv = adapter.handle(request, response, handler); //handle = paramMap 만들고 controller process 진행
 
         String viewName = mv.getViewName();//논리이름만 가져 올 수 있음 new-form
         MyView view = viewResolver(viewName); //new-form -> "/WEB-INF/views/new_form.jsp"
 
-        view.render(mv.getModel(), request, response);
+        view.render(mv.getModel(), request, response); // handle로 만든 paramMap process로 MyView에 Model로 집어 넣음
     }
 
     private MyHandlerAdapter getHandlerAdapter(Object handler) {
